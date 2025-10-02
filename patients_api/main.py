@@ -15,8 +15,8 @@ BASE.metadata.create_all(bind=ENGINE)
 async def health_check():
     return {"status": "Healthy"}
 
+
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(patients.router)
 app.include_router(therapists.router)
-
