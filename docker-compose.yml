@@ -1,0 +1,28 @@
+services:
+  db:
+    image: postgres:17.6-alpine3.21
+    container_name: patients_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: PatientsDatabase
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: patients_api
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/PatientsDatabase
+    ports:
+      - "8000:8000"
+    command: uvicorn patients_api.main:app --host 0.0.0.0 --port 8000
+
+volumes:
+  postgres_data:
