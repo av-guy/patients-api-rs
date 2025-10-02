@@ -88,6 +88,29 @@ def test_list_therapist_patients(test_patient, test_therapist):
     assert patients[0]["first_name"] == "John"
 
 
+def test_update_therapist(test_therapist):
+    request_data = {
+        "first_name": "UpdatedFirst",
+        "last_name": "UpdatedLast",
+        "therapist_type": "SLP"
+    }
+
+    response = client.put(
+        f"/therapists/{test_therapist.id}", json=request_data)
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+
+    db = TestingSessionLocal()
+    model = db.query(Therapist).filter(
+        Therapist.id == test_therapist.id).first()
+
+    assert model is not None
+    assert model.first_name == "UpdatedFirst"
+    assert model.last_name == "UpdatedLast"
+    assert model.therapist_type == "SLP"
+
+    assert model.patients == []
+
+
 def test_delete_therapist(test_therapist):
     response = client.delete(f"/therapists/{test_therapist.id}")
     assert response.status_code == status.HTTP_204_NO_CONTENT

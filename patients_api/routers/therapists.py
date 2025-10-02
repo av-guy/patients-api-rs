@@ -97,6 +97,37 @@ async def create_therapist(
     return therapist_model
 
 
+@router.put("/{therapist_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def update_therapist(
+    user: user_dependency,
+    db: db_dependency,
+    therapist_request: TherapistRequest,
+    therapist_id: int = Path(gt=0)
+):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication Failed.")
+
+    therapist_model = db.query(Therapist).filter(
+        Therapist.id == therapist_id).first()
+
+    if not therapist_model:
+        raise HTTPException(status_code=404, detail="Therapist not found")
+
+    try:
+        therapist_model.first_name = therapist_request.first_name
+        therapist_model.last_name = therapist_request.last_name
+        therapist_model.therapist_type = therapist_request.therapist_type
+
+        db.add(therapist_model)
+        db.commit()
+
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=400, detail="Database integrity error")
+
+    return
+
+
 @router.delete("/{therapist_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_therapist(
     user: user_dependency,
