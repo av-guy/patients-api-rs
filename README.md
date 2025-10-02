@@ -2,10 +2,6 @@
 
 A FastAPI application for managing patients and therapists.
 
-## Setup# Patients API
-
-A FastAPI application for managing patients and therapists.
-
 ## Setup
 
 Clone the repository:
