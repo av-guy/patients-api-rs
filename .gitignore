@@ -1,18 +1,14 @@
-# Byte-compiled / cache
 __pycache__/
 *.py[cod]
 *$py.class
 
-# pytest cache
 .pytest_cache/
 
-# SQLite / database files
 *.db
 
-# Virtual environment
 venv/
 .env/
+.venv/
 
-# VSCode / IDE stuff (optional, but nice to add)
 .vscode/
 .idea/
