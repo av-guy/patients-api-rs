@@ -23,7 +23,9 @@ pip install -r requirements.txt
 
 Start the FastAPI app with Uvicorn:
 
+```bash
 uvicorn patients_api.main:app --reload
+```
 
 Open http://127.0.0.1:8000/docs to explore the API.
 
