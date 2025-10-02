@@ -11,8 +11,8 @@ A FastAPI application for managing patients and therapists.
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/patients-api.git  
-cd patients-api
+git clone https://github.com/av-guy/patients-api-rs.git 
+cd patients-api-rs
 ```
 
 Create and activate a virtual environment, then install dependencies:
