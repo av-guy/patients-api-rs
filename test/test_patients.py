@@ -73,6 +73,19 @@ def test_create_patient():
             assert getattr(model, key) == value
 
 
+def test_create_patient_bad_therapist():
+    request_data = {
+        "first_name": "Bob",
+        "last_name": "Jones",
+        "therapists": [9999]
+    }
+
+    response = client.post("/patients", json=request_data)
+
+    assert response.status_code == 404
+    assert response.json() == {"detail": "One or more therapists not found"}
+
+
 def test_update_patient(test_patient, test_therapist):
     request_data = {
         "therapists": [test_therapist.id]

@@ -81,16 +81,36 @@ async def read_patient(
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_patient(user: user_dependency, db: db_dependency,
-                         patient_request: PatientRequest):
-
+async def create_patient(
+    user: user_dependency,
+    db: db_dependency,
+    patient_request: PatientRequest
+):
     if user is None:
         raise HTTPException(status_code=401, detail="Authentication Failed.")
 
-    patient_model = Patient(**patient_request.model_dump())
+    patient_model = Patient(
+        first_name=patient_request.first_name,
+        last_name=patient_request.last_name,
+    )
+
+    if patient_request.therapists:
+        therapists = (
+            db.query(Therapist)
+            .filter(Therapist.id.in_(patient_request.therapists))
+            .all()
+        )
+        if len(therapists) != len(patient_request.therapists):
+            raise HTTPException(
+                status_code=404, detail="One or more therapists not found")
+
+        patient_model.therapists.extend(therapists)
 
     db.add(patient_model)
     db.commit()
+    db.refresh(patient_model)
+
+    return patient_model
 
 
 @router.put("/{patient_id}", status_code=status.HTTP_204_NO_CONTENT)
