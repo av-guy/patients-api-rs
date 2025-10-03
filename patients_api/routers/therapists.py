@@ -1,12 +1,11 @@
 # pylint: disable=import-error
 # pylint: disable=raise-missing-from
 
-from typing import Annotated, Optional
+from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Path
 from pydantic import BaseModel, Field
 from starlette import status
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
 
 from ..database import SESSION_LOCAL
 from ..models import Therapist
